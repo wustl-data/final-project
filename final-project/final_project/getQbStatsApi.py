@@ -48,6 +48,7 @@ for row_index, row in dataset.iterrows():
             passing_yards = player(str(currentYear)).passing_yards
 
             newRow = [row[0],currentYear,completed_passes,attempted_passes,passing_touchdowns,interceptions_thrown,passing_yards_per_attempt,interception_percentage,quarterback_rating,yards_per_game_played,passing_yards_per_attempt,passing_yards]
+            print(newRow)
             stats.append(newRow)
             if(None in newRow):
                 print(newRow)
