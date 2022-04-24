@@ -7,6 +7,7 @@ authors = ["mattm0606 <matt.m@wustl.edu>"]
 [tool.poetry.dependencies]
 python = "^3.10"
 pandas = "^1.4.1"
+mkdocs = "^1.2.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
