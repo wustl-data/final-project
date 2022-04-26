@@ -8,10 +8,10 @@ import pandas as pd
 import plotly.io as pio
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
-import lrmodel
-from lrmodel import prepareModel
-import getQBAvgStats
-from getQBAvgStats import getSelectedQbStats
+import ramFiles.lrmodel
+from ramFiles.lrmodel import prepareModel
+import ramFiles.getQBAvgStats
+from ramFiles.getQBAvgStats import getSelectedQbStats
 
 ## Hannah's setup
 from sportsreference.nfl.roster import Player

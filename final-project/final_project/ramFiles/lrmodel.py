@@ -6,15 +6,15 @@ from sklearn.model_selection import train_test_split
 from sklearn import metrics
 
 
-   """This method prepares the estimated salary linear regression model by first reading in the data from the average statistics per year CSV for each QB as well
-      as the CSV with salary data (per year). It then uses SKlearn to prepare the model, and the first iteration of the model simply fit the model while the second iteration
-      used a training and testing split set. 
+"""This method prepares the estimated salary linear regression model by first reading in the data from the average statistics per year CSV for each QB as well
+   as the CSV with salary data (per year). It then uses SKlearn to prepare the model, and the first iteration of the model simply fit the model while the second iteration
+   used a training and testing split set. 
 
-     Returns:
-        LinearRegression: The prepared model
-   """
+   Returns:
+      LinearRegression: The prepared model
+"""
 def prepareModel():
-   stats_df = pd.read_csv('data/avgStats.csv', dtype={
+   stats_df = pd.read_csv('ramFiles/data/avgStats.csv', dtype={
                      'QB Name': 'str',
                      'Years': 'int64',
                      'Completed Passes': 'float64',
@@ -54,7 +54,7 @@ def prepareModel():
       x.append(newRow)
 
 
-   salary_df = pd.read_csv('data/salaryData.csv', dtype={
+   salary_df = pd.read_csv('ramFiles/data/salaryData.csv', dtype={
                      'QB Name': 'str',
                      'Number of Years on Contract': 'float64',
                      'Total Contract Size': 'float64',
@@ -70,6 +70,8 @@ def prepareModel():
    X, y = np.array(x), np.array(y)
 
    model = LinearRegression().fit(x, y)
+
+   # v2 model but for iteration 1 we will just use the v1 one for the presentation
   # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
   # regressor = LinearRegression()
   # regressor.fit(X_train, y_train)
@@ -79,7 +81,7 @@ def prepareModel():
  #  print(regressor.coef_)
  #  y_pred = regressor.predict(X_test)
 
-   df = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred})
+  # df = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred})
 
   # print('Mean Absolute Error:', metrics.mean_absolute_error(y_test, y_pred))
   # print('Mean Squared Error:', metrics.mean_squared_error(y_test, y_pred))

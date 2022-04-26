@@ -1,9 +1,9 @@
 import pandas as pd
 import csv
 
-   """This file reads in data from qbStats.csv, which contains the QB statistics directly from Sports Reference and then determines the average statistics per year. 
-      These averages are then written into another file called avgStats.csv to later be used to train the linear regression model.
-   """
+"""This file reads in data from qbStats.csv, which contains the QB statistics directly from Sports Reference and then determines the average statistics per year. 
+   These averages are then written into another file called avgStats.csv to later be used to train the linear regression model.
+"""
 
 df = pd.read_csv('data/qbStats.csv', dtype={
                     'QB Name': 'str',
