@@ -7,6 +7,10 @@ import csv
 from bs4 import BeautifulSoup
 import requests
 
+"""
+This file attempts to scrape to Sports Reference website for data but I decided to use the API instead after this seemed a little too complicated lol.
+"""
+
 url = "https://www.pro-football-reference.com/players/W/WilsRu00.htm"
 r = requests.get(url)
 soup = BeautifulSoup(r.text, 'html.parser')

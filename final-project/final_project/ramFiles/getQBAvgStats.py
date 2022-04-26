@@ -4,10 +4,14 @@ import pandas as pd
 import csv
 
 
-   """Attempt at scraping the Sports Reference website for data. lol
-   """
+"""This function gets the average statistics for a selected QB and returns this information. This function is used for helping create the dashboard.
+   Parameter:
+      qbName: string - name of the QB that stats are needed for
+   Return:
+      array: average statistics data for QB
+"""
 def getSelectedQbStats(qbName):
-    stats_df = pd.read_csv('data/avgStats.csv', dtype={
+    stats_df = pd.read_csv('ramFiles/data/avgStats.csv', dtype={
                      'QB Name': 'str',
                      'Years': 'int64',
                      'Completed Passes': 'float64',

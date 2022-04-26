@@ -4,10 +4,10 @@ import requests
 import re
 import csv
 
-    """This file scrapes the Spotrac website for current contract information for each Qb in a prepared list. It also scrapes data on how long the Qbs previous contract was,
-    information that will be used to figure out which years of statistics we need to save for each Qb. We also figure out the yearly salary for each QB here based of their contract size and years.
-    The data is all saved in a file called salaryData.csv.
-    """
+"""This file scrapes the Spotrac website for current contract information for each Qb in a prepared list. It also scrapes data on how long the Qbs previous contract was,
+information that will be used to figure out which years of statistics we need to save for each Qb. We also figure out the yearly salary for each QB here based of their contract size and years.
+The data is all saved in a file called salaryData.csv.
+"""
 
 qbs = [("tampa-bay-buccaneers","tom-brady"), 
         ("green-bay-packers","aaron-rodgers"),

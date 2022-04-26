@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
 
-    """This file is simply for doing some statistical analysis on the datasets I prepared.
-    """
+"""This file is simply for doing some statistical analysis on the datasets I prepared.
+"""
 
 salary_df = pd.read_csv('data/salaryData.csv', dtype={
                     'QB Name': 'str',
