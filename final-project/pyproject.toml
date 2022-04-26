@@ -8,6 +8,7 @@ authors = ["mattm0606 <matt.m@wustl.edu>"]
 python = "^3.10"
 pandas = "^1.4.1"
 mkdocs = "^1.2.3"
+numpy = "^1.22.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
