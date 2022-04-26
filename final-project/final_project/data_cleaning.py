@@ -1,6 +1,6 @@
 from pathlib import Path
 import pandas as pd
-
+pd.options.mode.chained_assignment = None
 def get_completed_passes_df():
     path = Path(__file__).parent / "../data/nfl-big-data-bowl-2021/plays.csv"
     plays_df = pd.read_csv(path)
@@ -11,5 +11,4 @@ def get_completed_passes_df():
     filter_df.loc[filter_df['playResult']>= filter_df['yardsToGo'],'epaYards'] = filter_df['epaYards']*(0.75+ filter_df['down']/4)
     filter_df.loc[filter_df['playDescription'].str.contains('TOUCHDOWN'), 'epaYards'] = filter_df['epaYards']*1.6
     return filter_df
-get_completed_passes_df()
 
