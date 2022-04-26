@@ -2,6 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import csv
+
+    """This file creates scatter plots with best line of fit to see how strong the correlation is between different QB stats, like years and passing yards, and salary. 
+       This was useful in figuring out which attributes are most important and should be used for the model with a visual representation
+    """
 # from these plots, I found out that Passing Yards per attempt, interception percentage, and qbr are all not that good. I also feel like some of this could be because of the "outliers" so I tried removing them and checked
 # some of the plots, like interception percentage look a bit better, and some like qbr look very good, however for the time being, I will remove these three attributes
 stats_df = pd.read_csv('data/avgStats.csv', dtype={

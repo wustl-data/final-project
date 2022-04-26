@@ -3,6 +3,9 @@ from sklearn.linear_model import LinearRegression
 import pandas as pd
 import csv
 
+
+   """Attempt at scraping the Sports Reference website for data. lol
+   """
 def getSelectedQbStats(qbName):
     stats_df = pd.read_csv('data/avgStats.csv', dtype={
                      'QB Name': 'str',
