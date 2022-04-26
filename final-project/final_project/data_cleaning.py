@@ -9,7 +9,7 @@ def get_completed_passes_df():
     filter_df = positive_yards_df.loc[positive_yards_df['playDescription'].str.contains('FUMBLE') == False]
     filter_df['epaYards'] = filter_df.loc[:,'playResult']
     filter_df.loc[filter_df['playResult']>= filter_df['yardsToGo'],'epaYards'] = filter_df['epaYards']*(0.75+ filter_df['down']/4)
-    filter_df.loc[filter_df['playDescription'].str.contains('TOUCHDOWN')] = filter_df['epaYards']*1.6
+    filter_df.loc[filter_df['playDescription'].str.contains('TOUCHDOWN'), 'epaYards'] = filter_df['epaYards']*1.6
     return filter_df
 get_completed_passes_df()
 
