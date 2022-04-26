@@ -22,7 +22,7 @@ app.layout = html.Div([
 @app.callback(Output('scatter_plot', "figure"), Input('check', 'options'))
 def update_scatter(input):
     df['down'] = df['down'].astype(str)
-    return px.scatter(df, x='playResult', y='epaYards', color ='down', symbol ='down')
+    return px.scatter(df, x='playResult', y='epaYards', color ='down', symbol ='down', labels={'playResult':'Yards Gained on Play', 'epaYards':'Game Impact', 'down':'Down'})
 
 
 if __name__ == '__main__':
