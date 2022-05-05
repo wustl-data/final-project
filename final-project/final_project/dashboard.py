@@ -12,8 +12,17 @@ import lrmodel
 from lrmodel import prepareModel
 import getQBAvgStats
 from getQBAvgStats import getSelectedQbStats
+from sportsreference.nfl.teams import Teams
 
 app = Dash(external_stylesheets=[dbc.themes.VAPOR])
+
+years_options = ['2021', '2020','2019','2018','2017','2016','2015','2014','2013','2012','2011','2010','2009','2008','2007','2006',
+'2005','2004','2003','2002','2001','2000']
+teams = Teams()
+team_abbr = {}
+for team in teams:
+    team_abbr[team.name] = team.abbreviation
+print(team_abbr)
 
 app.layout = html.Div([
     dcc.Tabs([
@@ -30,9 +39,12 @@ app.layout = html.Div([
         dcc.Tab(label='QB Economic Model (Choose from Players)', children=[
             dcc.Dropdown(['Tom Brady', 'Aaron Rodgers', 'Patrick Mahomes', 'Josh Allen','Matthew Stafford','Dak Prescott','Derek Carr','Ryan Tannehill','Kirk Cousins','Matt Ryan','Jimmy Garoppolo','Teddy Bridgewater','Carson Wentz','Jameis Winston','Jared Goff','Deshaun Watson','Mitchell Trubisky','Taylor Heinicke'], 'Tom Brady', id='qb-dropdown'),
             html.Div(id="output2")
-        ])
+        ]),
     ])
 ])
+
+
+
 
 @app.callback(
     Output("output", "children"),
@@ -62,6 +74,10 @@ def update_output2(value):
     model = prepareModel()
     y_pred = model.predict([newX])
     return u'Expected Salary: ${}'.format(y_pred)
+
+
+
+
 
 if __name__ == "__main__":
     app.run_server(debug=True)
