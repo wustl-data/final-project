@@ -5,6 +5,10 @@ from sportsipy.nfl.roster import Roster
 import pandas as pd
 import csv
 
+    """This file reads in the dates from the last contract for the QBs and then uses the Sports Reference API to get the QB's statistics from these years. 
+       This data is stored in a file called qbStats.csv.
+    """
+
 dataset = pd.read_csv("data/salaryData.csv", header=None)
 skippedFirst = False
 stats = []

@@ -13,6 +13,28 @@ from lrmodel import prepareModel
 import getQBAvgStats
 from getQBAvgStats import getSelectedQbStats
 from sportsreference.nfl.teams import Teams
+import ramFiles.lrmodel
+from ramFiles.lrmodel import prepareModel
+import ramFiles.getQBAvgStats
+from ramFiles.getQBAvgStats import getSelectedQbStats
+
+## Hannah's setup
+from sportsreference.nfl.roster import Player
+import matplotlib.pyplot as plt
+
+# players to look at from Wisconsin
+jonathon_taylor = "TaylJo02"
+james_white = "WhitJa02"
+melvin_gordon = "GordMe00"
+dare_ogum = "OgunDa00"
+corey_clement = "ClemCo00"
+
+jt = Player(jonathon_taylor)
+jw = Player(james_white)
+mg = Player(melvin_gordon)
+do = Player(dare_ogum)
+cc = Player(corey_clement)
+## end Hannah setup
 
 app = Dash(external_stylesheets=[dbc.themes.VAPOR])
 
@@ -40,6 +62,10 @@ app.layout = html.Div([
             dcc.Dropdown(['Tom Brady', 'Aaron Rodgers', 'Patrick Mahomes', 'Josh Allen','Matthew Stafford','Dak Prescott','Derek Carr','Ryan Tannehill','Kirk Cousins','Matt Ryan','Jimmy Garoppolo','Teddy Bridgewater','Carson Wentz','Jameis Winston','Jared Goff','Deshaun Watson','Mitchell Trubisky','Taylor Heinicke'], 'Tom Brady', id='qb-dropdown'),
             html.Div(id="output2")
         ]),
+        dcc.Tab(label='College Effect', children=[
+            dcc.Dropdown(['Career Yards', 'Career Yards/Touch', 'Combined'], 'Combined', id='college-dropdown'),
+            html.Div(id="college-graphs")
+        ])
     ])
 ])
 
@@ -75,9 +101,33 @@ def update_output2(value):
     y_pred = model.predict([newX])
     return u'Expected Salary: ${}'.format(y_pred)
 
+@app.callback(Output('college-graphs', 'children'),
+              Input('college-dropdown', 'value'))
+def render_content(graph):
+    name = [jt.name, jw.name, mg.name, do.name, cc.name]
+    yards = [jt.rush_yards, jw.rush_yards, mg.rush_yards, do.rush_yards, cc.rush_yards]
+    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd']
+    ypt = [(jt.rush_yards/jt.touches), (jw.rush_yards/jw.touches), (mg.rush_yards/mg.touches), (do.rush_yards/do.touches), (cc.rush_yards/cc.touches)]
 
-
-
+    if graph == 'Combined':
+        fig = px.scatter(x = yards, y = ypt, color = name, hover_name = name)
+        return html.Div([
+            dcc.Graph(figure = fig, id='combinedgraph'),
+            html.Hr()
+        ])
+    elif graph == 'Career Yards/Touch':
+        fig = px.bar(x = name, y = ypt, color = name, hover_name = name)
+        return html.Div([
+            dcc.Graph(figure = fig, id='cyptgraph'),
+            html.Hr()
+        ])
+    elif graph == 'Career Yards':
+        fig = px.bar(x = name, y = yards, color = name, hover_name = name)
+        return html.Div([
+            dcc.Graph(figure = fig, id='cyardsgraph'),
+            html.Hr()
+        ])
+    
 
 if __name__ == "__main__":
     app.run_server(debug=True)
