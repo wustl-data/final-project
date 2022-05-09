@@ -1,17 +1,18 @@
 # Run this app with `python dashboards/app.py` and
 # visit http://127.0.0.1:8050/ in your web browser.
 # open a new terminal window (Ctrl+Shift+` in VS Code.)
-
+from cProfile import label
+from turtle import title
+import dash
 from dash import Dash, html, dcc, Input, Output
 import plotly.express as px
 import pandas as pd
 import plotly.io as pio
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
-import lrmodel
-from lrmodel import prepareModel
-import getQBAvgStats
-from getQBAvgStats import getSelectedQbStats
+import numpy as np
+
+
 from sportsreference.nfl.teams import Teams
 import ramFiles.lrmodel
 from ramFiles.lrmodel import prepareModel
@@ -20,6 +21,10 @@ from ramFiles.getQBAvgStats import getSelectedQbStats
 
 ## Hannah's setup
 from sportsreference.nfl.roster import Player
+from sportsreference.nfl.teams import Teams
+from sportsreference.nfl.schedule import Schedule
+
+
 import matplotlib.pyplot as plt
 
 # players to look at from Wisconsin
@@ -42,9 +47,10 @@ years_options = ['2021', '2020','2019','2018','2017','2016','2015','2014','2013'
 '2005','2004','2003','2002','2001','2000']
 teams = Teams()
 team_abbr = {}
+team_names = []
 for team in teams:
     team_abbr[team.name] = team.abbreviation
-print(team_abbr)
+    team_names.append(team.name)
 
 app.layout = html.Div([
     dcc.Tabs([
@@ -65,12 +71,55 @@ app.layout = html.Div([
         dcc.Tab(label='College Effect', children=[
             dcc.Dropdown(['Career Yards', 'Career Yards/Touch', 'Combined'], 'Combined', id='college-dropdown'),
             html.Div(id="college-graphs")
+        ]),
+        dcc.Tab(label='Fourth Down Rate', children=[
+            dcc.Dropdown(team_names, 'Chicago Bears', id = 'team-name-dropdown'),
+            dcc.Dropdown(years_options, '2021', id = 'year-option-dropdown'),
+            html.Div(id = 'fourth-down-graph'),
+        ]),
+        dcc.Tab(label='Third Down Rate', children=[
+            dcc.Dropdown(team_names, 'Chicago Bears', id = 'third-team-name-dropdown'),
+            dcc.Dropdown(years_options, '2021', id = 'third-year-option-dropdown'),
+            html.Div(id = 'third-down-graph'),
         ])
     ])
 ])
 
+#Gus's callbacks for fourth down conversion rate
+@app.callback([Output('fourth-down-graph', 'children')],
+              [Input('team-name-dropdown', 'value'),
+              Input('year-option-dropdown', 'value')])
+def fourth_choose_team_and_year(team,year):
+    schedule = Schedule(team_abbr[team], year)
+    fourth_down_rate = []
+    fourth_down_conv = schedule.dataframe.fourth_down_conversions
+    fourth_down_att = schedule.dataframe.fourth_down_attempts
+    fourth_down_rate = (fourth_down_conv/fourth_down_att)
+    fourth_down_rate_cleaned = fourth_down_rate.dropna()
+  
+    fig = px.scatter(x = fourth_down_rate_cleaned.index, y = fourth_down_rate_cleaned.values, color = fourth_down_rate_cleaned.values > 0.5, 
+    title = u'Fourth Down Conversion Rate Scatterplot for the {}'.format(team), labels = {'x': 'GameCodes', 'y': 'Conversion Rate'})
+    return [html.Div([
+        dcc.Graph(figure = fig, id = 'fourth-graph')
+    ])]
 
-
+#Gus's callbacks for third down conversion rate
+@app.callback([Output('third-down-graph', 'children')],
+              [Input('third-team-name-dropdown', 'value'),
+              Input('third-year-option-dropdown', 'value')])
+def third_choose_team_and_year(team,year):
+    schedule = Schedule(team_abbr[team], year)
+    third_down_rate = []
+    third_down_conv = schedule.dataframe.third_down_conversions
+    third_down_att = schedule.dataframe.third_down_attempts
+    third_down_rate = (third_down_conv/third_down_att)
+    third_down_rate_cleaned = third_down_rate.dropna()
+  
+    fig = px.scatter(x = third_down_rate_cleaned.index, y = third_down_rate_cleaned.values, color = third_down_rate_cleaned.values > 0.35, 
+    title = u'Third Down Conversion Rate Scatterplot for the {}'.format(team), labels = {'x': 'GameCodes', 'y': 'Conversion Rate'})
+    return [html.Div([
+        dcc.Graph(figure = fig, id = 'third-graph')
+    ])]
 
 @app.callback(
     Output("output", "children"),
@@ -127,7 +176,6 @@ def render_content(graph):
             dcc.Graph(figure = fig, id='cyardsgraph'),
             html.Hr()
         ])
-    
 
 if __name__ == "__main__":
     app.run_server(debug=True)
