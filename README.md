@@ -57,30 +57,74 @@ Now that I knew which statistics I needed to find the average statistic per year
 
 ```Python
 def getSelectedQbStats(qbName)
-
+"""
 This function gets the average statistics for a selected QB and returns this information.
 
 * Parameters
     * qbName: string - name of the QB that stats are needed for
 * Return
     * array: average statistics data for QB
+"""
 ```
 
 To train the model, I also needed the average statistics of all the quarterbacks in a CSV file. I prepared the script to do so in getAllAvgStats.py, in which I took the data from qbStats.csv, calculated the averages, and stored that information in a file called avgStats.csv
 
 #### Creating the Model - lrmodel.py
-Now that I had all the data I needed, it was time to create the model. Because all my data attributes seemed to have a strong linear regression, I decided to create a linear regression model, with the x value being the average statistics and the y value being the salary per year. Just to clarify, this salary per year is based on the current contract of the quarterback while the statistics are all from the previous contract of the quarterback. The following function is found inside lrmodel.py
+Now that I had all the data I needed, it was time to create the model. Because all my data attributes seemed to have a strong linear regression, I decided to create a linear regression model, with the x value being the average statistics and the y value being the salary per year. Just to clarify, this salary per year is based on the current contract of the quarterback while the statistics are all from the previous contract of the quarterback. I used sklearn LinearRegression model to make my economic model. The following function is found inside lrmodel.py
 
 ```Python
 def prepareModel()
-
+"""
 This method prepares the estimated salary linear regression model by first reading in the data from the average statistics per year CSV for each QB as well as the CSV with salary data (per year). It then uses SKlearn to prepare the model, and the first iteration of the model simply fit the model while the second iteration used a training and testing split set. 
 
 * Parameters
-    * qbName: string - name of the QB that stats are needed for
+    * None
 * Return
-    * array: average statistics data for QB
+    * LinearRegression: The prepared model
+"""
 ```
 
+#### Analyzing my model - statisticalAnalysis.py
+I decided to do some analysis of my model and just quarterback salaries in general. I did some basic statistical analysis in statisticalAnalysis.py and my findings can be find in my presentation slides.
 
+Overall, I found that my model had a strong r squared value but the root mean squared error wasn't very good. I attribute this to the fact that I only had 21 data points to built my model, and a good model needs a lot more than that.
+
+
+#### Dash App
+I created two ways to interact with my model in our group's dash app. The first one can be found in the "QB Economic Model (Choose from Players)" tab. I have entered every quarterback that was one of the datapoints for the model and one could choose one of the quarterbacks and see what my model says they should earn.
+
+```Python
+def update_output2(value)
+"""
+This method is a callback function takes the quarterback selection, finds their average statistics, generates a model, inputs the statistics into that model, and then returns the expected salary the model predicts.
+
+* Parameters
+    * value - string: name of the quarterback selected from the dropdown menu.
+* Return
+    * string - the expected salary predicted from the model in a string format to display on the dash app.
+"""
+```
+
+I also have the "QB Economic Model (Fill in Stats)" tab where one could enter in their own custom statistics to see what a quarterback should earn based on my model.
+
+```Python
+def update_output2(value)
+"""
+def update_output(years, completedPasses, attemptedPasses, passingTds,ints,ydpergame,passingYards)
+
+This method is a callback function that takes in the statistics the user wrote in the text boxes and then creates a model and inserts the statistics into the model. It then returns the model's predicted. expected salary.
+
+* Parameters
+    * years - int: the number of years
+    *  completedPasses - average number of passes completed over the course of years (# of years is parameter 1)
+    * attemptedPasses - average number of passes attempted over the course of years (# of years is parameter 1)
+    * passingTds - average number of passing touchdowns over the course of years (# of years is parameter 1)
+   * ints - average number of interceptions over the course of years (# of years is parameter 1)
+   * ydpergame - average yards per game over the course of years (# of years is parameter 1)
+   * passingYards - average passing yards per year over the course of years (# of years is parameter 1)
+
+* Return
+    * string - the expected salary predicted from the model in a string format to display on the dash app.
+"""
+```
 
