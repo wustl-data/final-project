@@ -90,16 +90,16 @@ app.layout = html.Div([
         dcc.Tab(label='Fourth Down Rate', children=[
             dcc.Dropdown(team_names, 'Chicago Bears', id = 'team-name-dropdown'),
             dcc.Dropdown(years_options, '2021', id = 'year-option-dropdown'),
-            html.Div(id = 'fourth-down-graph'),
+            html.Div(id = 'fourth-down-graph')
         ]),
         dcc.Tab(label='Third Down Rate', children=[
             dcc.Dropdown(team_names, 'Chicago Bears', id = 'third-team-name-dropdown'),
             dcc.Dropdown(years_options, '2021', id = 'third-year-option-dropdown'),
-            html.Div(id = 'third-down-graph'),
+            html.Div(id = 'third-down-graph')
         ]),
-        dcc.Tab(label='Game Impact', children =[
-            dcc.Graph(id='completions_full'),
-            dcc.Checklist(completed_passes_df['down'].unique,['1'], id = 'completions_full_check'),
+        dcc.Tab(label='Game Impact', children=[
+            #dcc.Graph(id='completions_full'),
+            #dcc.Checklist(completed_passes_df['down'].unique,['1'], id = 'completions_full_check')
         ])
     ])
 ])
@@ -193,36 +193,42 @@ def render_content(graph):
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd']
     if graph == 'Career Rush Attempts':
         fig = px.bar(x = name, y = get_rush_attempts(wisc), color = name, hover_name = name)
+        fig.update_layout(title = graph, xaxis_title="Name", yaxis_title = "Rush Attempts")
         return html.Div([
             dcc.Graph(figure = fig, id='rush-attempts-graph'),
             html.Hr()
         ])
     elif graph == 'Career Rush Attempts per Game':
         fig = px.bar(x = name, y = get_rush_attempts_per_game(wisc), color = name, hover_name = name)
+        fig.update_layout(title = graph, xaxis_title="Name", yaxis_title = "Rush Attempts per Game")
         return html.Div([
             dcc.Graph(figure = fig, id='rush-att-gm-graph'),
             html.Hr()
         ])
     elif graph == 'Career Rushing Touchdowns':
         fig = px.bar(x = name, y = get_rush_td(wisc), color = name, hover_name = name)
+        fig.update_layout(title = graph, xaxis_title="Name", yaxis_title = "Rushing Touchdowns")
         return html.Div([
             dcc.Graph(figure = fig, id='rushtd-graph'),
             html.Hr()
         ])
     elif graph == 'Career Rushing Yards':
         fig = px.bar(x = name, y = get_rush_yards(wisc), color = name, hover_name = name)
+        fig.update_layout(title = graph, xaxis_title="Name", yaxis_title = "Rushing Yards")
         return html.Div([
             dcc.Graph(figure = fig, id='rush-yards-graph'),
             html.Hr()
         ])
     elif graph == 'Career Rush Yards per Attempt':
         fig = px.bar(x = name, y = get_rush_yards_per_attempt(wisc), color = name, hover_name = name)
+        fig.update_layout(title = graph, xaxis_title="Name", yaxis_title = "Rush Yards per Attempt")
         return html.Div([
             dcc.Graph(figure = fig, id='rush-yards-att-graph'),
             html.Hr()
         ])
     elif graph == 'Career Times Pass Target':
         fig = px.bar(x = name, y = get_times_pass_target(wisc), color = name, hover_name = name)
+        fig.update_layout(title = graph, xaxis_title="Name", yaxis_title = "Times Pass Target")
         return html.Div([
             dcc.Graph(figure = fig, id='pass-target-graph'),
             html.Hr(),
@@ -230,6 +236,7 @@ def render_content(graph):
         ])
     elif graph ==  'Career Yards per Touch':
         fig = px.bar(x = name, y = get_yards_per_touch(wisc), color = name, hover_name = name)
+        fig.update_layout(title = graph, xaxis_title="Name", yaxis_title = "Yards per Touch")
         fig.add_hline(y = 4, annotation_text = "Average RB")
         fig.add_hline(y= 5, annotation_text = "Good RB")
         return html.Div([
