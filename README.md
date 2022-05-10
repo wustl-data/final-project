@@ -14,3 +14,6 @@ or if you navigated to the right folder
 python3 dashboard.py
 ```
 ## Economic Salary Model (Ram)
+
+## Third and Fourth Down Conversion Rate (Gus)
+My setup is labeled with comments, everything inside the "Gus's setup" and "End Gus's setup" is what is needed for both groups, which are lists filled with the year options and team options. There is a dictionary named team_abbr, which is used in my function so that I can use the "Schedule()" function to grab a team's entire season statistics. I have two graphs, a fourth and third down conversion rate scatterplot, with the option through a dropdown menu to select any team in the NFL and any year from 2002-2021. Both of my dcc tabs are labeled "Fourth Down Rate" and "Third Down Rate".

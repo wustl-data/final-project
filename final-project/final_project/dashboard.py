@@ -43,6 +43,7 @@ cc = Player(corey_clement)
 
 app = Dash(external_stylesheets=[dbc.themes.VAPOR])
 
+#Gus's setup
 years_options = ['2021', '2020','2019','2018','2017','2016','2015','2014','2013','2012','2011','2010','2009','2008','2007','2006',
 '2005','2004','2003','2002','2001','2000']
 teams = Teams()
@@ -51,6 +52,7 @@ team_names = []
 for team in teams:
     team_abbr[team.name] = team.abbreviation
     team_names.append(team.name)
+#End Gus's setup
 
 app.layout = html.Div([
     dcc.Tabs([
@@ -85,11 +87,20 @@ app.layout = html.Div([
     ])
 ])
 
-#Gus's callbacks for fourth down conversion rate
+#Gus's callback for fourth down conversion rate
 @app.callback([Output('fourth-down-graph', 'children')],
               [Input('team-name-dropdown', 'value'),
               Input('year-option-dropdown', 'value')])
 def fourth_choose_team_and_year(team,year):
+    """changes graph based on team and year selected from dropdowns, initialized with the Chicago Bear's 2021 season
+
+    Args:
+        team (list of str): Selected team from dropdown
+        year (list of str): Selected year from dropdown
+
+    Returns:
+        figure: Scatterplot of fourth down conversion rate for the team and year selected, na values omitted from plot
+    """
     schedule = Schedule(team_abbr[team], year)
     fourth_down_rate = []
     fourth_down_conv = schedule.dataframe.fourth_down_conversions
@@ -103,11 +114,20 @@ def fourth_choose_team_and_year(team,year):
         dcc.Graph(figure = fig, id = 'fourth-graph')
     ])]
 
-#Gus's callbacks for third down conversion rate
+#Gus's callback for third down conversion rate
 @app.callback([Output('third-down-graph', 'children')],
               [Input('third-team-name-dropdown', 'value'),
               Input('third-year-option-dropdown', 'value')])
 def third_choose_team_and_year(team,year):
+    """changes graph based on team and year selected from dropdowns, initialized with the Chicago Bear's 2021 season
+
+    Args:
+        team (list of str): Selected team from dropdown
+        year (list of str): Selected year from dropdown
+
+    Returns:
+        figure: Scatterplot of third down conversion rate for the team and year selected, na values omitted from plot
+    """
     schedule = Schedule(team_abbr[team], year)
     third_down_rate = []
     third_down_conv = schedule.dataframe.third_down_conversions
