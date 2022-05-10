@@ -100,6 +100,8 @@ app.layout = html.Div([
         dcc.Tab(label='Game Impact', children =[
             dcc.Graph(id='completions_full'),
             dcc.Checklist(completed_passes_df['down'].unique,['1'], id = 'completions_full_check'),
+            dcc.Graph(id ='incompletions_full'),
+            dcc.Checklist(completed_passes_df['down'].unique,['1'], id = 'incompletions_full_check'),
         ])
     ])
 ])
