@@ -54,6 +54,17 @@ for team in teams:
     team_names.append(team.name)
 #End Gus's setup
 
+#Start Matt's Setup
+from mattFiles.data_cleaning import get_completed_passes_df
+from mattFiles.data_cleaning import get_incompleted_passes_df
+from mattFiles.data_cleaning import completion_teams_description
+from mattFiles.data_cleaning import incompletion_teams_description
+completed_passes_df = get_completed_passes_df()
+incompleted_passes_df = get_incompleted_passes_df()
+comp_desc = completion_teams_description()
+incomp_desc = incompletion_teams_description()
+#End Matts's Setup
+
 app.layout = html.Div([
     dcc.Tabs([
         dcc.Tab(label='QB Economic Model (Fill in Stats)', children=[
@@ -83,6 +94,10 @@ app.layout = html.Div([
             dcc.Dropdown(team_names, 'Chicago Bears', id = 'third-team-name-dropdown'),
             dcc.Dropdown(years_options, '2021', id = 'third-year-option-dropdown'),
             html.Div(id = 'third-down-graph'),
+        ]),
+        dcc.Tab(label='Game Impact', children =[
+            dcc.Graph(id='completions_full'),
+            dcc.Checklist(completed_passes_df['down'].unique,['1'], id = 'completions_full_check'),
         ])
     ])
 ])
@@ -196,6 +211,8 @@ def render_content(graph):
             dcc.Graph(figure = fig, id='cyardsgraph'),
             html.Hr()
         ])
+
+#Start of Matt's GameImpact Tab
 
 if __name__ == "__main__":
     app.run_server(debug=True)
