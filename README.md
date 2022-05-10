@@ -153,3 +153,30 @@ def third_choose_team_and_year(team,year):
         figure: Scatterplot of third down conversion rate for the team and year selected, na values omitted from plot
     """
 ```
+
+## College Effect: Does University of Wisconsin, which is know as RBU, prepare running backs well for the NFL?
+I chose the five running backs that were active in the NFL as of last season: Jonathon Taylor, James White, Melvin Gordon, Dare Ogumbowale, and Corey Clement. They will have experienced a similar style of play and regulations in the NFL. In the past season Jonathon Taylor was very successful but I want to see if other Wisconsin running backs have seen similar success or if his success was separate from his school.
+I looked at seven measures of running backs, using the sports reference api.
+- Rush Attempts
+- Rush Attempts per Game
+- Rushing Touchdowns
+- Rush Yards
+- Rush Yards/Attempt
+- Yards per Touch
+- Times Pass Target
+For each of these stats I created a helper function in hannahFiles/college.py which given an array of players fetches the stat for each and returns them in an array.
+```Python
+def get_yards_per_touch(players):
+    """Fetches career yards per touch
+
+    Args:
+        players (array): players to retrieve career yards per touch for
+
+    Returns:
+        array: array of yards per touch for inputted players
+    """
+    return [player.yards_per_touch for player in players]
+```
+In the dashboard there is a graph for each of these measures, comparing the 5 Wisconsin Running Backs chosen.
+Yards per Touch is often the most considered stat for running backs and it uses an average and so is comparable across variable lengths of careers. There are standard benchmarks for the quality of a running back based on their yards per touch, I added these benchmarks to the graph. All of the Wisconsin running backs were above the average benchmark and several were above the good. Indicating that in general Wisconsin running backs perform well in the NFL though more careful consideration of other measures is needed.
+The times pass target stat is not related to rush, but helps to see if maybe a college running back is now being used more as a receiver. For example James White was low career rushing yards, but that is likely because he was more often targeted for a pass and so may have more receiving yards.
