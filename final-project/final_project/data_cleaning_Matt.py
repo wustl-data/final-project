@@ -31,9 +31,13 @@ def get_incompleted_passes_df():
 def completion_teams_description():
     full_df = get_completed_passes_df()
     select_df = pd.DataFrame().assign(possessionTeam = full_df['possessionTeam'], epaYards = full_df['epaYards'])
-    return select_df.groupby(['possessionTeam']).describe()
+    df = select_df.groupby(['possessionTeam']).describe()
+    df.columns = df.columns.droplevel(0)
+    return df
 
 def incompletion_teams_description():
     full_df = get_incompleted_passes_df()
     select_df = pd.DataFrame().assign(possessionTeam = full_df['possessionTeam'], epaYardsOp = full_df['epaYardsOp'])
-    return select_df.groupby(['possessionTeam']).describe()
+    df = select_df.groupby(['possessionTeam']).describe()
+    df.columns = df.columns.droplevel(0)
+    return df
