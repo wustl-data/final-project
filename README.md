@@ -128,4 +128,28 @@ This method is a callback function that takes in the statistics the user wrote i
 """
 ```
 ## Third and Fourth Down Conversion Rate (Gus)
-My setup is labeled with comments, everything inside the "Gus's setup" and "End Gus's setup" is what is needed for both groups, which are lists filled with the year options and team options. There is a dictionary named team_abbr, which is used in my function so that I can use the "Schedule()" function to grab a team's entire season statistics. I have two graphs, a fourth and third down conversion rate scatterplot, with the option through a dropdown menu to select any team in the NFL and any year from 2002-2021. Both of my dcc tabs are labeled "Fourth Down Rate" and "Third Down Rate".
+My setup is labeled with comments, everything inside the "Gus's setup" and "End Gus's setup" is what is needed for both groups, which are lists filled with the year options and team options. There is a dictionary named team_abbr, which is used in my function so that I can use the "Schedule()" function to grab a team's entire season statistics. I have two graphs, a fourth and third down conversion rate scatterplot, with the option through a dropdown menu to select any team in the NFL and any year from 2002-2021. Both of my dcc tabs are labeled "Fourth Down Rate" and "Third Down Rate". Basically how calculating the fourth and third down conversion rates are the same, so I will give an example of just fourth down: The team and year selected will go into the api, with the team being inputted into the dcitionary mentioned above, so that it converts the full team name to the abbreviated name (i.e. Chicago Bears: CHI) and then the year is obviously that team's entire season. The columns using the "Schedule" portion of the api allows me to grab the team's fourth down attempts and conversions from every game of that selected season. After putting the conversions and attempts into a variable, I would create a new variable where I put conversions divided by attempts to calculate the fourth down conversion rate for that specific game. Since conversion rate variable is a list of values, I was able to store the team's conversion rate from every game of that season into the variable.However, since the na values created an unaesthetic scatterplot, I removed all na values from the list (which mostly came from fourth down conversion, since teams attempt fourth downs less than third downs). Then created a scatterplot with the all the remaining values. For fourth down, I colored the points by if the rate was under/over 0.5 and then 0.35 for third down since teams attempt third down more often, they tend to have a lower third down conversion rate than fourth down conversion rate.
+```Python
+def fourth_choose_team_and_year(team,year):
+    """changes graph based on team and year selected from dropdowns, initialized with the Chicago Bear's 2021 season
+
+    Args:
+        team (list of str): Selected team from dropdown
+        year (list of str): Selected year from dropdown
+
+    Returns:
+        figure: Scatterplot of fourth down conversion rate for the team and year selected, na values omitted from plot
+    """
+```
+```Python
+def third_choose_team_and_year(team,year):
+    """changes graph based on team and year selected from dropdowns, initialized with the Chicago Bear's 2021 season
+
+    Args:
+        team (list of str): Selected team from dropdown
+        year (list of str): Selected year from dropdown
+
+    Returns:
+        figure: Scatterplot of third down conversion rate for the team and year selected, na values omitted from plot
+    """
+```
