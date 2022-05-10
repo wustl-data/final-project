@@ -23,8 +23,8 @@ from ramFiles.getQBAvgStats import getSelectedQbStats
 from sportsreference.nfl.roster import Player
 from sportsreference.nfl.teams import Teams
 from sportsreference.nfl.schedule import Schedule
-
-
+import hannahFiles.college
+from hannahFiles.college import get_rush_attempts, get_rush_attempts_per_game, get_rush_td, get_rush_yards, get_rush_yards_per_attempt, get_times_pass_target, get_yards_per_touch
 import matplotlib.pyplot as plt
 
 # players to look at from Wisconsin
@@ -39,6 +39,8 @@ jw = Player(james_white)
 mg = Player(melvin_gordon)
 do = Player(dare_ogum)
 cc = Player(corey_clement)
+wisc = [jt, jw, mg, do, cc]
+name = ["Jonathon Taylor", "James White", "Melvin Gordon", "Dare Ogumbowale", "Corey Clement"]
 ## end Hannah setup
 
 app = Dash(external_stylesheets=[dbc.themes.VAPOR])
@@ -71,7 +73,7 @@ app.layout = html.Div([
             html.Div(id="output2")
         ]),
         dcc.Tab(label='College Effect', children=[
-            dcc.Dropdown(['Career Yards', 'Career Yards/Touch', 'Combined'], 'Combined', id='college-dropdown'),
+            dcc.Dropdown(['Career Rush Attempts', 'Career Rush Attempts per Game', 'Career Rushing Touchdowns', 'Career Rushing Yards', 'Career Rush Yards per Attempt', 'Career Times Pass Target', 'Career Yards per Touch'], 'Career Yards per Touch', id='college-dropdown'),
             html.Div(id="college-graphs")
         ]),
         dcc.Tab(label='Fourth Down Rate', children=[
@@ -173,28 +175,52 @@ def update_output2(value):
 @app.callback(Output('college-graphs', 'children'),
               Input('college-dropdown', 'value'))
 def render_content(graph):
-    name = [jt.name, jw.name, mg.name, do.name, cc.name]
-    yards = [jt.rush_yards, jw.rush_yards, mg.rush_yards, do.rush_yards, cc.rush_yards]
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd']
-    ypt = [(jt.rush_yards/jt.touches), (jw.rush_yards/jw.touches), (mg.rush_yards/mg.touches), (do.rush_yards/do.touches), (cc.rush_yards/cc.touches)]
-
-    if graph == 'Combined':
-        fig = px.scatter(x = yards, y = ypt, color = name, hover_name = name)
+    if graph == 'Career Rush Attempts':
+        fig = px.bar(x = name, y = get_rush_attempts(wisc), color = name, hover_name = name)
         return html.Div([
-            dcc.Graph(figure = fig, id='combinedgraph'),
+            dcc.Graph(figure = fig, id='rush-attempts-graph'),
             html.Hr()
         ])
-    elif graph == 'Career Yards/Touch':
-        fig = px.bar(x = name, y = ypt, color = name, hover_name = name)
+    elif graph == 'Career Rush Attempts per Game':
+        fig = px.bar(x = name, y = get_rush_attempts_per_game(wisc), color = name, hover_name = name)
         return html.Div([
-            dcc.Graph(figure = fig, id='cyptgraph'),
+            dcc.Graph(figure = fig, id='rush-att-gm-graph'),
             html.Hr()
         ])
-    elif graph == 'Career Yards':
-        fig = px.bar(x = name, y = yards, color = name, hover_name = name)
+    elif graph == 'Career Rushing Touchdowns':
+        fig = px.bar(x = name, y = get_rush_td(wisc), color = name, hover_name = name)
         return html.Div([
-            dcc.Graph(figure = fig, id='cyardsgraph'),
+            dcc.Graph(figure = fig, id='rushtd-graph'),
             html.Hr()
+        ])
+    elif graph == 'Career Rushing Yards':
+        fig = px.bar(x = name, y = get_rush_yards(wisc), color = name, hover_name = name)
+        return html.Div([
+            dcc.Graph(figure = fig, id='rush-yards-graph'),
+            html.Hr()
+        ])
+    elif graph == 'Career Rush Yards per Attempt':
+        fig = px.bar(x = name, y = get_rush_yards_per_attempt(wisc), color = name, hover_name = name)
+        return html.Div([
+            dcc.Graph(figure = fig, id='rush-yards-att-graph'),
+            html.Hr()
+        ])
+    elif graph == 'Career Times Pass Target':
+        fig = px.bar(x = name, y = get_times_pass_target(wisc), color = name, hover_name = name)
+        return html.Div([
+            dcc.Graph(figure = fig, id='pass-target-graph'),
+            html.Hr(),
+            "James White was targeted for passes significantly more, and likely took more of a wide receiver role which explains why his rushing stats are lower than the others despite having a longer career."
+        ])
+    elif graph ==  'Career Yards per Touch':
+        fig = px.bar(x = name, y = get_yards_per_touch(wisc), color = name, hover_name = name)
+        fig.add_hline(y = 4, annotation_text = "Average RB")
+        fig.add_hline(y= 5, annotation_text = "Good RB")
+        return html.Div([
+            dcc.Graph(figure = fig, id='yards-touch-graph'),
+            html.Hr(),
+            "All Wisconsin RB have an average yards per touch for their career above the line for an average RB and several are above the limit for a good RB."
         ])
 
 if __name__ == "__main__":
