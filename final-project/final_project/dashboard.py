@@ -97,9 +97,11 @@ app.layout = html.Div([
             dcc.Dropdown(years_options, '2021', id = 'third-year-option-dropdown'),
             html.Div(id = 'third-down-graph')
         ]),
-        dcc.Tab(label='Game Impact', children=[
-            #dcc.Graph(id='completions_full'),
-            #dcc.Checklist(completed_passes_df['down'].unique,['1'], id = 'completions_full_check')
+        dcc.Tab(label='Game Impact', children =[
+            dcc.Graph(id='completions_full'),
+            dcc.Checklist(completed_passes_df['down'].unique(),[1], id = 'completions_full_check'),
+            dcc.Graph(id ='incompletions_full'),
+            dcc.Checklist(np.unique(incompleted_passes_df['down']),[1], id = 'incompletions_full_check'),
         ])
     ])
 ])
