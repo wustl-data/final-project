@@ -180,3 +180,28 @@ def get_yards_per_touch(players):
 In the dashboard there is a graph for each of these measures, comparing the 5 Wisconsin Running Backs chosen.
 Yards per Touch is often the most considered stat for running backs and it uses an average and so is comparable across variable lengths of careers. There are standard benchmarks for the quality of a running back based on their yards per touch, I added these benchmarks to the graph. All of the Wisconsin running backs were above the average benchmark and several were above the good. Indicating that in general Wisconsin running backs perform well in the NFL though more careful consideration of other measures is needed.
 The times pass target stat is not related to rush, but helps to see if maybe a college running back is now being used more as a receiver. For example James White was low career rushing yards, but that is likely because he was more often targeted for a pass and so may have more receiving yards.
+
+## Creating a Stat to Contextualize Pass Defense (Matt)
+Using the NFL Big Data Bowl Dataset from 2021, I looked to create a statistic for pass defenses/defensive backs to better understand their performance. Within the plays.csv given, I added an extra column for the generated stat two separate times: one to look at completions and the other for incompletions. This separation is to weigh the positives and negatives of performance differently. With completions, the amount of yards on the completion is a good base to start the statistic. But with incompletions, each play is a zero yard gain which can't be used as a base differentiator. So I will go through how each the stats were made and visualized through each method. 
+
+```Python
+def get_completed_passes_df():
+    """The plays file is first read in and filtered to only look at rows that are completions that gained yardage and did not result in a fumble.
+
+    The epaYards column is then created which will be the home of the negative game impact score of a defense. The base of the stat is yards picked up on the completion. Then if the completion is greater than the yards till a first down, a multiplier between 1-1.75 is given based on what down it is to show serverity of the play in later downs. Then a 1.6 multiplier is given for plays that result in a touchdown. A final muliplier is added if the game is within 10 points and its between 1-1.3 to show serverity of the time of the game. So overall, the higher score, the worse your pass defense performed on the play. 
+
+    The function then returns a dataframe with this added stat.
+    """
+    return filter_df
+
+def get_incompleted_passes_df():
+    """The plays file is first read in and filtered to only look at rows that are incompletions that did not result in a sack, penalty, fumble, intentional grounding, or unnecessary roughness.
+
+    The epaYardsOp column is then created based on the epa column which is expected points added. The greater the expected points added the greater the incompletion as its stopping a higher chance of points added for the other team. This is multiplied by what down it is to provide severity based on the down. Similarly to the previous function we also weight if the game is close with the same multiplier. Finally we give a redzone multiplier based on how deep in the redzone the opposing team is.
+
+    The dataframe is then returned with this additional stat. 
+    """
+    return filter_df
+```
+These are the two main functions as they create the stats we are looking at. We have two more functions to return a data frame that gives the statistical description of each of the stats based on the team with possession of the ball. I wasn't able to connect the defensive teams with all the separate plays so I decided to look at the passing offense teams throughout the season looking at both of these stats. These four function can be looked at in detail with the four different interactive graphs on my dashboard. The first graph compares yard gained on play and negatve impact with a down slection to compare how what down impacts the stat. The second looks at the negative game impact on opposing offenses. With no surprise, Kansas City's offense got the greatest average score which goes to show how good Patrick Mahomes is against defenses around the league. The third compares positive game impact to yards to end of endzone with a selection of downs. This shows where defenses were best on the field depending on the down. The last graph shows how much good defense affected offenses. Again Kansas City has the best score for an offense as their pass offense was statistically very good. 
+
